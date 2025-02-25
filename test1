@@ -1,0 +1,16 @@
+import gurobipy as gp
+
+model = gp.Model("QP_Example")
+x = model.addVars(3, name="x")
+
+# Objective: x² + y² + z² + xy
+model.setObjective(x[0]*x[0] + x[1]*x[1] + x[2]*x[2] + x[0]*x[1], gp.GRB.MINIMIZE)
+
+# Constraints
+model.addConstr(x[0] + x[1] + x[2] == 1)
+model.addConstr(x[0] >= 0)
+model.addConstr(x[1] >= 0)
+model.addConstr(x[2] >= 0)
+
+model.optimize()
+print("Optimal solution:", [x[i].X for i in range(3)])
